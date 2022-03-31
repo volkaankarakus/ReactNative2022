@@ -6,13 +6,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-
-
-
 const loginValidationSchema = Yup.object().shape({
     username : Yup.string()
       .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
+      .max(20, 'Too Long!')
       .required('Username is required'),
     password : Yup.string()
       .min(8, ({ min }) => `Password must be at least ${min} characters`)
@@ -29,7 +26,6 @@ const loginValidationSchema = Yup.object().shape({
   });
     
 
-
 export default function Login() {
 
     const [showPassword,setShowPassword] = useState(false);
@@ -42,7 +38,7 @@ export default function Login() {
      onSubmit={values => alert(JSON.stringify(values))}
      validationSchema = {loginValidationSchema}  
     >
-     {({ handleChange, handleBlur, handleSubmit, values,touched,errors,isValid }) => (
+     {({ handleChange, handleBlur, handleSubmit,setFieldTouched, values,touched,errors,isValid }) => (
         <SafeAreaView style={style.body}>
         <ScrollView>
             <View style={style.header}>
@@ -57,7 +53,7 @@ export default function Login() {
                 <View style={style.item}>
                     <TextInput
                         onChangeText={handleChange('username')}
-                        onBlur={handleBlur('username')}
+                        onBlur={() => setFieldTouched('username')}
                         value={values.username}
                         placeholder='Username' 
                         autoCapitalize='none'
@@ -72,7 +68,7 @@ export default function Login() {
                 <View style={style.item}>
                     <TextInput
                         onChangeText={handleChange('password')}
-                        onBlur={handleBlur('password')}
+                        onBlur={() => setFieldTouched('password')}
                         value={values.password}
                         placeholder='Password'
                         secureTextEntry= {!showPassword}
@@ -91,7 +87,7 @@ export default function Login() {
                 <View style={style.item}>
                     <TextInput 
                         onChangeText={handleChange('email')}
-                        onBlur={handleBlur('email')}
+                        onBlur={() => setFieldTouched('email')}
                         value={values.email}
                         placeholder='Email' 
                         style={style.input}
